@@ -1,9 +1,15 @@
 import { createAPI } from '@/utils/request'
+// 后台管理>菜单
 
+// 菜单列表
 export const list = data => createAPI('/menus', 'get', data)
+// 菜单添加
 export const add = data => createAPI('/menus', 'post', data)
+// 菜单修改
 export const update = data => createAPI(`/menus/${data.id}`, 'put', data)
+// 菜单删除
 export const remove = data => createAPI(`/menus/${data.id}`, 'delete', data)
+// 菜单详情
 export const detail = data => createAPI(`/menus/${data.id}`, 'get', data)
 
 export const search = data => {
