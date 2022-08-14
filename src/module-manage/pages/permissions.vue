@@ -85,6 +85,12 @@ export default {
     },
     handleCloseModal() {
       this.dialogFormVisible = false;
+      this.formBase = {
+        id: 0,
+        create_date: "",
+        title: "",
+        permissions: [],
+      };
     },
     onSuccess() {
       this.getPermissionsList();
@@ -109,9 +115,9 @@ export default {
     // 修改
     async updatePermission(row) {
       this.text = "编辑";
-      // console.log(row);
+
       const { data } = await detail(row);
-      // console.log(res);
+
       this.formBase = data;
       this.dialogFormVisible = true;
     },
