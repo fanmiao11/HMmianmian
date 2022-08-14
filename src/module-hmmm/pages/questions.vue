@@ -5,7 +5,7 @@
  * @email: 1373842098@qq.com
  * @Date: 2022-08-12 20:57:16
  * @LastEditors: sj
- * @LastEditTime: 2022-08-13 16:54:18
+ * @LastEditTime: 2022-08-13 17:39:09
 -->
 <template>
   <div class='container'>
@@ -29,6 +29,7 @@
   <el-button  plain type="warning" icon="el-icon-check" circle></el-button>
   </template>
     </CommTable>
+    <Pagination :pageSize="pagesize.pagesize" :total="counts" @pageChange="toPage" @pageSizeChange="onPageSizeChange"/>
     </el-card>
 
   </div>
@@ -37,6 +38,7 @@
 <script>
 import {list } from '@/api/hmmm/questions'
 import CommTable from '@/components/CommTable'
+import Pagination from '@/components/Pagination'
 export default {
   data(){
     return {
@@ -52,6 +54,10 @@ export default {
       ],
       tableData:[],
       counts:0,
+      pagesize: {
+       page: 1,
+       pagesize: 5
+      }
     }
   },
   created(){
@@ -59,7 +65,7 @@ export default {
   },
   methods:{
     async getList(){
-      const res = await list()
+      const res = await list(this.pagesize)
       console.log(res);
       this.tableData = res.data.items
       this.counts = res.data.counts
@@ -67,10 +73,21 @@ export default {
     click(row){
       console.log(111);
       console.log(row);
+    },
+    // 去某一页
+    toPage(num){
+      this.pagesize.page = num;
+      this.getList(this.pagesize)
+    },
+    // 改变每页几条数据
+    onPageSizeChange(pageSize){
+       this.pagesize.pagesize = pageSize;
+       this.getList(this.pagesize)
     }
   },
       components:{
-    CommTable
+    CommTable,
+    Pagination
   }
 }
 </script>
