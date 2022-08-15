@@ -1,53 +1,60 @@
 <template>
   <div class="container">
-    精选题库
-    <!-- 表单 -->
-    <search-form @search="search"></search-form>
-    <!-- 分页 -->
-    <pagination
-      :pageSizes="pageSizes"
-      :pageSize="pageSize"
-      :total="total"
-      @pageChange="pageChange"
-      @pageSizeChange="pageSizeChange"
-    >
-    </pagination>
+    <el-card class="box-card">
+      <!-- 新增按钮 -->
+      <el-row type="flex" class="row-bg" justify="end">
+        <el-button type="success" icon="el-icon-edit" size="small">
+          新增试题</el-button
+        >
+      </el-row>
+      <!-- 搜索表单 -->
+      <search-form @search="search"></search-form>
+      <!-- tab栏 -->
+      <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+        <el-tab-pane label="全部" name="first">用户管理</el-tab-pane>
+        <el-tab-pane label="待审核" name="second">配置管理</el-tab-pane>
+        <el-tab-pane label="已审核" name="third">角色管理</el-tab-pane>
+        <el-tab-pane label="已拒绝" name="fourth">定时任务补偿</el-tab-pane
+        >
+      </el-tabs>
+
+    </el-card>
   </div>
 </template>
 
 <script>
 import SearchForm from "../components/search-form.vue";
-import Pagination from "@/components/Pagination";
+import QuestionsTabs from '../components/questions-chioice-tabs.vue'
+
 export default {
   components: {
-    Pagination,
+
     SearchForm,
+    QuestionsTabs,
   },
   data() {
     return {
-
-      // 分页
-      pageSizes: [5, 20, 30, 50],
-      pageSize: 20,
-      total: 50,
+     
     };
   },
-  created(){
-  },
+  created() {},
   methods: {
     // 搜索
-    search(form){
+    search(form) {
       console.log(form);
     },
 
-    // 进入某一页
-    pageChange(pageNum) {
-      console.log(pageNum);
-    },
-    // 改变每页条数
-    pageSizeChange(pageSize) {},
   },
 };
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.container {
+  padding: 0 10px;
+  margin: 10px 0;
+}
+.el-row {
+  margin-bottom: 20px;
+  margin-right: 10px;
+}
+</style>

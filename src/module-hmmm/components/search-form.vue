@@ -1,11 +1,17 @@
 <template>
   <div class="search-form">
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
+    <el-form
+      label-width="80px"
+      label-position="right"
+      :inline="true"
+      :model="formInline"
+      class="demo-form-inline"
+    >
       <el-row>
         <el-col :span="6">
-          <el-form-item label="学科" label-width="80px">
+          <el-form-item label="学科">
             <el-select
-              style="width: 300px"
+              style="width: 100%"
               v-model="formInline.subjectID"
               placeholder="请选择"
               @change="subjectChange"
@@ -16,15 +22,12 @@
                 :label="item.subjectName"
                 :value="item.id"
               ></el-option>
-            </el-select> </el-form-item
-        ></el-col>
+            </el-select>
+          </el-form-item>
+        </el-col>
         <el-col :span="6">
-          <el-form-item label="二级目录" label-width="80px">
-            <el-select
-              style="width: 300px"
-              v-model="formInline.directory"
-              placeholder="请选择"
-            >
+          <el-form-item label="二级目录">
+            <el-select v-model="formInline.directory" placeholder="请选择">
               <el-option
                 v-for="item in directoryOptions"
                 :key="item.id"
@@ -35,11 +38,7 @@
         ></el-col>
         <el-col :span="6">
           <el-form-item label="标签" label-width="80px">
-            <el-select
-              style="width: 300px"
-              v-model="formInline.tags"
-              placeholder="请选择"
-            >
+            <el-select v-model="formInline.tags" placeholder="请选择">
               <el-option
                 v-for="item in tagsOptions"
                 :key="item.id"
@@ -48,21 +47,20 @@
               ></el-option>
             </el-select> </el-form-item
         ></el-col>
+
         <el-col :span="6">
-          <el-form-item label="关键字" label-width="80px">
+          <el-form-item label="关键字">
             <el-input
-              style="width: 300px"
+              style="width: 100%"
               v-model="formInline.keyWord"
               placeholder="根据题干搜索"
-            /> </el-form-item
-        ></el-col>
+            />
+          </el-form-item>
+        </el-col>
+
         <el-col :span="6">
-          <el-form-item label="试题类型" label-width="80px">
-            <el-select
-              style="width: 300px"
-              v-model="formInline.questionType"
-              placeholder="请选择"
-            >
+          <el-form-item label="试题类型">
+            <el-select v-model="formInline.questionType" placeholder="请选择">
               <el-option
                 v-for="item in questionType"
                 :key="item.value"
@@ -72,12 +70,8 @@
             </el-select> </el-form-item
         ></el-col>
         <el-col :span="6">
-          <el-form-item label="难度" label-width="80px">
-            <el-select
-              style="width: 300px"
-              v-model="formInline.difficulty"
-              placeholder="请选择"
-            >
+          <el-form-item label="难度">
+            <el-select v-model="formInline.difficulty" placeholder="请选择">
               <el-option
                 v-for="item in difficulty"
                 :key="item.value"
@@ -87,12 +81,8 @@
             </el-select> </el-form-item
         ></el-col>
         <el-col :span="6">
-          <el-form-item label="方向" label-width="80px">
-            <el-select
-              style="width: 300px"
-              v-model="formInline.direction"
-              placeholder="请选择"
-            >
+          <el-form-item label="方向">
+            <el-select v-model="formInline.direction" placeholder="请选择">
               <el-option
                 v-for="item in direction"
                 :key="item"
@@ -102,12 +92,8 @@
             </el-select> </el-form-item
         ></el-col>
         <el-col :span="6">
-          <el-form-item label="录入人" label-width="80px">
-            <el-select
-              style="width: 300px"
-              v-model="formInline.user"
-              placeholder="请选择"
-            >
+          <el-form-item label="录入人">
+            <el-select v-model="formInline.user" placeholder="请选择">
               <el-option
                 v-for="item in userOptions"
                 :key="item.id"
@@ -117,25 +103,20 @@
             </el-select> </el-form-item
         ></el-col>
         <el-col :span="6">
-          <el-form-item label="题目备注" label-width="80px">
-            <el-input
-              style="width: 300px"
-              v-model="formInline.note"
-              placeholder=""
-            /> </el-form-item
+          <el-form-item label="题目备注">
+            <el-input v-model="formInline.note" placeholder="" /> </el-form-item
         ></el-col>
         <el-col :span="6">
-          <el-form-item label="企业简称" label-width="80px">
+          <el-form-item label="企业简称">
             <el-input
-              style="width: 300px"
               v-model="formInline.shortName"
               placeholder=""
             /> </el-form-item
         ></el-col>
-        <el-col :span="6">
-          <el-form-item label="城市" label-width="80px">
+        <el-col :span="6" >
+          <el-form-item label="城市">
             <el-select
-              :style="{width: '145px',marginRight:'10px'}"
+              style="width: 40%;margin-right:10px"
               v-model="formInline.citys.city"
               placeholder="请选择"
               @change="cityChange"
@@ -148,7 +129,7 @@
               ></el-option>
             </el-select>
             <el-select
-              style="width: 145px"
+              style="width: 40%"
               v-model="formInline.citys.area"
               placeholder="请选择"
             >
@@ -161,8 +142,8 @@
             </el-select> </el-form-item
         ></el-col>
 
-        <el-col :span="6">
-          <el-form-item>
+        <el-col :span="6" style="display: flex;justify-content: flex-end;">
+          <el-form-item >
             <el-button @click="clearForm">清除</el-button>
             <el-button type="primary" @click="search">查询</el-button>
           </el-form-item>
@@ -244,7 +225,7 @@ export default {
     // 获取用户列表
     async getUsers() {
       const { data } = await usersList();
-    //   console.log(data);
+      //   console.log(data);
       this.userOptions = data.list;
     },
     // 获取城市数据
@@ -278,8 +259,8 @@ export default {
     },
     // 点击搜索
     search() {
-    //   console.log("搜索");
-      this.$emit('search',this.formInline)
+      //   console.log("搜索");
+      this.$emit("search", this.formInline);
     },
   },
 };
@@ -290,7 +271,11 @@ export default {
   background: #fff;
 }
 .el-col {
-  display: flex;
-  justify-content: flex-end;
+  // display: flex;
+  // justify-content: flex-end;
+  white-space: nowrap;
+}
+::v-deep.el-form-item .el-form-item__content,.el-select {
+  width: 100%;
 }
 </style>
