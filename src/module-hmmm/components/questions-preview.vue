@@ -5,7 +5,7 @@
  * @email: 1373842098@qq.com
  * @Date: 2022-08-12 20:57:16
  * @LastEditors: sj
- * @LastEditTime: 2022-08-15 01:33:28
+ * @LastEditTime: 2022-08-15 09:31:10
 -->
 <template>
   <div class='container'>
@@ -42,11 +42,12 @@
       :label="item.isRight"
       v-for="item in detailInfo.options"
       :key="item.id"
+      @change="onChange"
       >{{item.title}}</el-radio>
       </div>
 
       <!-- 多选 -->
-      <el-checkbox-group v-model="checkList" v-if="detailInfo?.questionType == 2" class="checkbox">
+      <el-checkbox-group v-model="checkList" v-if="detailInfo?.questionType == 2" class="checkbox" >
         <el-checkbox :label="item.title" v-for="item in detailInfo.options" :key="item.id"></el-checkbox>
       </el-checkbox-group>
     </div>
@@ -83,7 +84,7 @@ import { difficulty,questionType}from '@/api/hmmm/constants'
 export default {
   data(){
     return {
-      radio: '1',
+      radio: 1,
       isShoeVideo: false,
     }
   },
@@ -102,6 +103,9 @@ export default {
      if(url) {
       this.isShoeVideo = true;
      }
+    },
+    onChange(){
+      this.radio =1
     }
   },
   computed:{
