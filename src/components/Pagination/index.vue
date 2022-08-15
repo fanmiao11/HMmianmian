@@ -1,3 +1,12 @@
+<!--
+ * @Descripttion:
+ * @version:
+ * @Author: suiyue
+ * @email: 1373842098@qq.com
+ * @Date: 2022-08-13 17:14:46
+ * @LastEditors: sj
+ * @LastEditTime: 2022-08-13 17:49:44
+-->
 <template>
   <!-- 分页组件 -->
   <div class="pagination">
@@ -51,6 +60,6 @@ export default {
   background-color: #fff;
   padding: 20px 0;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 </style>

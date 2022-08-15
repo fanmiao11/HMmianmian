@@ -25,13 +25,5 @@ export default {
     id: '4',
     value: '试题录入'
   }
-  ],
-  companysStatus:[{
-    id: 0,
-    value: '禁用'
-  },
-  {
-    id: 1,
-    value: '启用'
-  }]
+  ]
 }

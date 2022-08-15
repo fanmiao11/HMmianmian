@@ -5,7 +5,7 @@
  * @email: 1373842098@qq.com
  * @Date: 2022-08-13 10:54:14
  * @LastEditors: sj
- * @LastEditTime: 2022-08-13 16:08:05
+ * @LastEditTime: 2022-08-15 00:09:00
 -->
 <template>
       <el-table
@@ -56,6 +56,7 @@
 
 <script>
 import { difficulty,questionType, status}from '@/api/hmmm/constants'
+import { formatConstants } from '../../module-hmmm/utils'
 import dayjs from "dayjs"
 export default {
   props:{
@@ -99,16 +100,13 @@ export default {
    methods:{
     formatter(row, column, cellValue){
       if (column.label === "创建日期"||column.label === "录入时间"|| column.label === "操作时间"){
-          return dayjs(row.addDate).format("YYYY.MM.DD HH:mm:ss");
+        return dayjs(row.addDate).format("YYYY.MM.DD HH:mm:ss");
       }else if (column.label === "难度"){
-       const findItem = difficulty.find((item) =>item.value == cellValue)
-       return findItem.label
+        return formatConstants(difficulty,cellValue)
       }else if (column.label === "题型"){
-       const findItem = questionType.find((item) =>item.value == cellValue)
-       return findItem.label
+        return formatConstants(questionType,cellValue)
       }else if (column.label === "状态"){
-       const findItem = status.find((item) =>item.value == cellValue)
-       return findItem.label
+        return formatConstants(status,cellValue)
       }
       return  cellValue
 
