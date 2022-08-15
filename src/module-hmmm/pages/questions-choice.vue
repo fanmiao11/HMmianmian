@@ -1,37 +1,71 @@
+<!--
+ * @Descripttion:
+ * @version:
+ * @Author: suiyue
+ * @email: 1373842098@qq.com
+ * @Date: 2022-08-13 17:01:02
+ * @LastEditors: sj
+ * @LastEditTime: 2022-08-13 17:06:53
+-->
 <template>
   <div class="container">
-    精选题库
-    <pagination
-      :pageSizes="pageSizes"
-      :pageSize="pageSize"
-      :total="total"
-      @pageChange="pageChange"
-      @pageSizeChange="pageSizeChange"
-    >
-    </pagination>
+    <el-card class="box-card">
+      <!-- 新增按钮 -->
+      <el-row type="flex" class="row-bg" justify="end">
+        <el-button type="success" icon="el-icon-edit" size="small">
+          新增试题</el-button
+        >
+      </el-row>
+      <!-- 搜索表单 -->
+      <search-form @search="search"></search-form>
+      <!-- tab栏 -->
+      <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+        <el-tab-pane label="全部" name="first">
+          <questions-tabs></questions-tabs>
+        </el-tab-pane>
+        <el-tab-pane label="待审核" name="second">
+          <questions-tabs></questions-tabs>
+        </el-tab-pane>
+        <el-tab-pane label="已审核" name="third">
+          <questions-tabs></questions-tabs>
+        </el-tab-pane>
+        <el-tab-pane label="已拒绝" name="fourth">
+          <questions-tabs></questions-tabs>
+        </el-tab-pane>
+      </el-tabs>
+    </el-card>
   </div>
 </template>
 
 <script>
-import Pagination from "@/components/Pagination";
+import SearchForm from "../components/search-form.vue";
+import QuestionsTabs from "../components/questions-chioice-tabs.vue";
+
 export default {
   components: {
-    Pagination,
+    SearchForm,
+    QuestionsTabs,
   },
   data() {
-    return {
-      pageSizes: [5, 20, 30, 50],
-      pageSize: 20,
-      total: 50,
-    };
+    return {};
   },
+  created() {},
   methods: {
-    // 进入某一页
-    pageChange(pageNum) {},
-    // 改变每页条数
-    pageSizeChange(pageSize) {},
+    // 搜索
+    search(form) {
+      console.log(form);
+    },
   },
 };
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.container {
+  padding: 0 10px;
+  margin: 10px 0;
+}
+.el-row {
+  margin-bottom: 20px;
+  margin-right: 10px;
+}
+</style>
