@@ -38,8 +38,8 @@ export default {
     // 数据总条数
     total: {
       type: Number,
-      // required:true
-      default: 20,
+      required:true
+      // default: 20,
     },
   },
   methods: {
