@@ -20,31 +20,34 @@
       <search-form @search="search"></search-form>
       <!-- tab栏 -->
       <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-        <el-tab-pane label="全部" name="first">用户管理</el-tab-pane>
-        <el-tab-pane label="待审核" name="second">配置管理</el-tab-pane>
-        <el-tab-pane label="已审核" name="third">角色管理</el-tab-pane>
-        <el-tab-pane label="已拒绝" name="fourth">定时任务补偿</el-tab-pane
-        >
+        <el-tab-pane label="全部" name="first">
+          <questions-tabs></questions-tabs>
+        </el-tab-pane>
+        <el-tab-pane label="待审核" name="second">
+          <questions-tabs></questions-tabs>
+        </el-tab-pane>
+        <el-tab-pane label="已审核" name="third">
+          <questions-tabs></questions-tabs>
+        </el-tab-pane>
+        <el-tab-pane label="已拒绝" name="fourth">
+          <questions-tabs></questions-tabs>
+        </el-tab-pane>
       </el-tabs>
-
     </el-card>
   </div>
 </template>
 
 <script>
 import SearchForm from "../components/search-form.vue";
-import QuestionsTabs from '../components/questions-chioice-tabs.vue'
+import QuestionsTabs from "../components/questions-chioice-tabs.vue";
 
 export default {
   components: {
-
     SearchForm,
     QuestionsTabs,
   },
   data() {
-    return {
-     
-    };
+    return {};
   },
   created() {},
   methods: {
@@ -52,7 +55,6 @@ export default {
     search(form) {
       console.log(form);
     },
-
   },
 };
 </script>
