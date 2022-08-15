@@ -1,3 +1,12 @@
+/*
+ * @Descripttion:
+ * @version:
+ * @Author: suiyue
+ * @email: 1373842098@qq.com
+ * @Date: 2022-08-12 20:57:16
+ * @LastEditors: sj
+ * @LastEditTime: 2022-08-13 09:57:02
+ */
 import Vue from 'vue'
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 import Element from 'element-ui'
