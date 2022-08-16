@@ -5,7 +5,7 @@
  * @email: 1373842098@qq.com
  * @Date: 2022-08-12 20:57:16
  * @LastEditors: sj
- * @LastEditTime: 2022-08-15 00:09:35
+ * @LastEditTime: 2022-08-15 15:27:08
 -->
 <template>
   <div class='container'>
@@ -32,9 +32,9 @@
     >
     <template v-slot="scope">
    <el-button  plain type="primary" icon="el-icon-view" circle @click="clickView(scope.row)"></el-button>
-  <el-button  plain type="success" icon="el-icon-edit" circle></el-button>
-  <el-button plain type="danger" icon="el-icon-delete" circle></el-button>
-  <el-button  plain type="warning" icon="el-icon-check" circle></el-button>
+  <el-button  plain type="success" icon="el-icon-edit" circle @click="toEdit(scope.row.id)"></el-button>
+  <el-button plain type="danger" icon="el-icon-delete" circle @click="toDelQuestion(scope.row)"></el-button>
+  <el-button  plain type="warning" icon="el-icon-check" circle @click="toJoinQuestionsChoice(scope.row)"></el-button>
     </template>
     </CommTable>
     <!-- 分页 -->
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { list ,detail} from '@/api/hmmm/questions'
+import { list ,detail,remove,choiceAdd} from '@/api/hmmm/questions'
 import CommTable from '@/components/CommTable'
 import Pagination from '@/components/Pagination'
 import SearchForm from '../components/search-form.vue'
@@ -109,6 +109,54 @@ export default {
     // 点击查询
     onSearch(info){
       this.getList({...info,...this.pagesize})
+    },
+    // 去修改试题
+    toEdit(id){
+      this.$router.push(
+        {
+          name: 'questions-new',
+          query:{
+            id
+          }
+        }
+      )
+    },
+    // 删除试题
+    toDelQuestion(row){
+        this.$confirm('此操作将永久删除该题目, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+           await remove(row)
+           this.$message({
+             type: 'success',
+            message: '删除成功!'
+          });
+
+          this.getList(this.pagesize)
+        }).catch(() => {
+
+        });
+      },
+    // 是否添加到精选题库
+    toJoinQuestionsChoice(row){
+      row.choiceState=1
+       this.$confirm('此操作将该题目加入精选, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+           await choiceAdd(row)
+           this.$message({
+             type: 'success',
+            message: '加入精选题库成功!'
+          });
+        //  this.getList(this.pagesize)
+         this.$router.push('/questions/choice')
+        }).catch(() => {
+
+        });
     }
   },
       components:{

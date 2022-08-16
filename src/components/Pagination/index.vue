@@ -18,6 +18,7 @@
       :page-size="pageSize"
       :page-sizes="pageSizes"
       :total="total"
+      :hide-on-single-page='true'
     >
     </el-pagination>
   </div>
