@@ -1,7 +1,7 @@
 <template>
   <div class="articles-container">
-    <el-card class="box-card"
-      ><el-form ref="form" :model="reqListParams" label-width="80px">
+    <el-card class="box-card">
+      <el-form ref="form" :model="reqListParams" label-width="80px">
         <el-row>
           <el-col :span="6">
             <el-form-item label="关键词">
@@ -26,7 +26,11 @@
             >
           </el-col>
           <el-col :span="6" style="text-align: right">
-            <el-button size="mini" type="success" icon="el-icon-edit"
+            <el-button
+              size="mini"
+              type="success"
+              icon="el-icon-edit"
+              @click="addSkill"
               >新增技巧</el-button
             >
             <!-- @click="addItem" -->
@@ -65,7 +69,7 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="{ row }">
-            <el-button type="text">预览</el-button>
+            <el-button type="text" @click="previewShow(row)">预览</el-button>
             <el-button
               type="text"
               v-if="row.state === 1"
@@ -75,16 +79,34 @@
             <el-button type="text" v-else @click="changState(row.id, row.state)"
               >启用</el-button
             >
-            <el-button type="text" :disabled="row.state === 1">修改</el-button>
-            <el-button type="text" :disabled="row.state === 1">删除</el-button>
+            <el-button
+              type="text"
+              :disabled="row.state === 1"
+              @click="onUpdate(row)"
+              >修改</el-button
+            >
+            <el-button
+              type="text"
+              :disabled="row.state === 1"
+              @click="delItem(row)"
+              >删除</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
+      <!-- 分页组件 -->
       <my-pagination
         @pageChange="pageChange"
         @pageSizeChange="pageSizeChange"
         :total="count"
       ></my-pagination>
+      <!-- 预览文章弹框 -->
+      <articles-preview
+        ref="preview"
+        :previewData="previewData"
+      ></articles-preview>
+      <!-- 新增文章弹框 -->
+      <articles-add ref="add"></articles-add>
     </el-card>
   </div>
 </template>
@@ -92,7 +114,9 @@
 <script>
 import dayjs from "dayjs";
 import MyPagination from "@/components/Pagination";
-import { list, changeState } from "@/api/hmmm/articles.js";
+import articlesPreview from "../components/articles-preview.vue";
+import articlesAdd from "../components/articles-add.vue";
+import { list, changeState, remove } from "@/api/hmmm/articles.js";
 export default {
   name: "articles",
   data() {
@@ -105,7 +129,8 @@ export default {
         keyword: null, //	关键字
         state: null, //	状态
       },
-      count: null, // 数据总数
+      count: 1, // 数据总数
+      previewData: {},
     };
   },
 
@@ -115,7 +140,7 @@ export default {
       const { data } = await list(params);
       this.count = data.counts;
       this.tableData = data.items;
-      console.log(data);
+      // console.log(data);
     },
     formatTime(row, column, cellValue, index) {
       return dayjs(cellValue).format("YYYY-MM-DD HH:mm:ss");
@@ -146,8 +171,8 @@ export default {
       this.getList(this.resData);
     },
     async changState(id, flag) {
-      console.log(id);
-      console.log(flag);
+      // console.log(id);
+      // console.log(flag);
       let state;
       if (flag === 1) {
         state = 0;
@@ -157,13 +182,61 @@ export default {
       const res = await changeState(id, state);
       this.getList(this.resData);
     },
+    // 新增技巧
+    addSkill() {
+      this.$refs.add.dialogFormVisible = true;
+      this.$refs.add.title = "新增文章";
+      this.$refs.add.form = {
+        title: "",
+        articleBody: "",
+        videoURL: "",
+      };
+    },
+    // 预览
+    previewShow(row) {
+      this.$refs.preview.dialogFormVisible = true;
+      this.previewData = row;
+    },
+    // 删除
+    async delItem(row) {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+          remove(row);
+          this.getList(this.resData);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+    // 修改
+    onUpdate(row) {
+      // console.log(row);
+      this.$refs.add.dialogFormVisible = true;
+      this.$refs.add.title = "修改文章";
+      this.$refs.add.form = {
+        title: row.title,
+        articleBody: row.articleBody,
+        videoURL: row.videoURL,
+      };
+    },
   },
 
   created() {
     this.getList(this.resData);
   },
 
-  components: { MyPagination },
+  components: { MyPagination, articlesPreview, articlesAdd },
 };
 </script>
 
