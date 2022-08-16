@@ -55,7 +55,7 @@
 
    <div>
     <span>【参考答案】：</span>
-    <el-button type="danger" @click="onShoeVideo(detailInfo.videoUR)">视频答案预览</el-button>
+    <el-button type="danger" @click="onShoeVideo(detailInfo.videoURL)">视频答案预览</el-button>
     <br>
     <video controls width="400" height="300" :src="detailInfo.videoURL" v-if="isShoeVideo" muted autoplay></video>
    </div>

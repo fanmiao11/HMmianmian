@@ -2,8 +2,6 @@
   <div class="search-form">
     <el-form
       label-width="80px"
-      label-position="right"
-      :inline="true"
       :model="formInline"
       class="demo-form-inline"
     >
@@ -11,7 +9,6 @@
         <el-col :span="6">
           <el-form-item label="学科">
             <el-select
-              style="width: 100%"
               v-model="formInline.subjectID"
               placeholder="请选择"
               @change="subjectChange"
@@ -27,7 +24,7 @@
         </el-col>
         <el-col :span="6">
           <el-form-item label="二级目录">
-            <el-select v-model="formInline.directory" placeholder="请选择">
+            <el-select v-model="formInline.catalogID" placeholder="请选择">
               <el-option
                 v-for="item in directoryOptions"
                 :key="item.id"
@@ -37,7 +34,7 @@
             </el-select> </el-form-item
         ></el-col>
         <el-col :span="6">
-          <el-form-item label="标签" label-width="80px">
+          <el-form-item label="标签">
             <el-select v-model="formInline.tags" placeholder="请选择">
               <el-option
                 v-for="item in tagsOptions"
@@ -51,8 +48,7 @@
         <el-col :span="6">
           <el-form-item label="关键字">
             <el-input
-              style="width: 100%"
-              v-model="formInline.keyWord"
+              v-model="formInline.keyword"
               placeholder="根据题干搜索"
             />
           </el-form-item>
@@ -93,7 +89,7 @@
         ></el-col>
         <el-col :span="6">
           <el-form-item label="录入人">
-            <el-select v-model="formInline.user" placeholder="请选择">
+            <el-select v-model="formInline.creatorID" placeholder="请选择">
               <el-option
                 v-for="item in userOptions"
                 :key="item.id"
@@ -104,7 +100,10 @@
         ></el-col>
         <el-col :span="6">
           <el-form-item label="题目备注">
-            <el-input v-model="formInline.note" placeholder="" /> </el-form-item
+            <el-input
+              v-model="formInline.remarks"
+              placeholder=""
+            /> </el-form-item
         ></el-col>
         <el-col :span="6">
           <el-form-item label="企业简称">
@@ -113,11 +112,11 @@
               placeholder=""
             /> </el-form-item
         ></el-col>
-        <el-col :span="6" >
+        <el-col :span="6">
           <el-form-item label="城市">
             <el-select
-              style="width: 40%;margin-right:10px"
-              v-model="formInline.citys.city"
+              style="width: 40%; margin-right: 10px"
+              v-model="formInline.province"
               placeholder="请选择"
               @change="cityChange"
             >
@@ -130,7 +129,7 @@
             </el-select>
             <el-select
               style="width: 40%"
-              v-model="formInline.citys.area"
+              v-model="formInline.city"
               placeholder="请选择"
             >
               <el-option
@@ -142,8 +141,8 @@
             </el-select> </el-form-item
         ></el-col>
 
-        <el-col :span="6" style="display: flex;justify-content: flex-end;">
-          <el-form-item >
+        <el-col :span="6" style="display: flex; justify-content: flex-end">
+          <el-form-item>
             <el-button @click="clearForm">清除</el-button>
             <el-button type="primary" @click="search">查询</el-button>
           </el-form-item>
@@ -165,20 +164,18 @@ export default {
     return {
       // 表单
       formInline: {
-        subjectID: "",
-        directory: "",
-        tags: "",
-        keyWord: "",
-        questionType: "",
-        difficulty: "",
-        direction: "",
-        user: "",
-        note: "",
-        shortName: "",
-        citys: {
-          city: "",
-          area: "",
-        },
+        subjectID: "", //学科
+        catalogID: "", //目录
+        tags: "", //标签
+        keyword: "", //关键字
+        questionType: "", //题目类型
+        difficulty: "", //难度
+        direction: "", //方向
+        creatorID: "", //录入人
+        remarks: "", //备注
+        shortName: "", //企业简称
+        province: "", //企业所在地省份province
+        city: "", //企业所在城市 city
       },
       subjectOptions: [],
       directoryOptions: [],
@@ -241,20 +238,18 @@ export default {
       //   console.log("清除");
       // this.$emit('')
       this.formInline = {
-        subjectID: "",
-        directory: "",
-        tags: "",
-        keyWord: "",
-        questionType: "",
-        difficulty: "",
-        direction: "",
-        user: "",
-        note: "",
-        shortName: "",
-        citys: {
-          city: "",
-          area: "",
-        },
+        subjectID: "", //学科
+        catalogID: "", //目录
+        tags: "", //标签
+        keyword: "", //关键字
+        questionType: "", //题目类型
+        difficulty: "", //难度
+        direction: "", //方向
+        creatorID: "", //录入人
+        remarks: "", //备注
+        shortName: "", //企业简称
+        province: "", //企业所在地省份province
+        city: "", //企业所在城市 city
       };
     },
     // 点击搜索
@@ -273,9 +268,10 @@ export default {
 .el-col {
   // display: flex;
   // justify-content: flex-end;
-  white-space: nowrap;
+  // white-space: nowrap;
 }
-::v-deep.el-form-item .el-form-item__content,.el-select {
+// ::v-deep.el-form-item .el-form-item__content,
+.el-select {
   width: 100%;
 }
 </style>
