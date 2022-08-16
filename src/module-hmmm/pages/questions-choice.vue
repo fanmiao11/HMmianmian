@@ -173,7 +173,7 @@ export default {
         id: "",
         chkState: 1,
         chkRemarks: "",
-      },
+  },
     };
   },
   created() {
