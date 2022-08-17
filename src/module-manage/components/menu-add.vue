@@ -3,7 +3,7 @@
     <el-dialog
       :title="text + pageTitle"
       :visible="dialogFormVisible"
-      @close="$emit('handleCloseModal')"
+      @close="handleClose"
     >
       <el-form
         :rules="ruleInline"
@@ -99,21 +99,21 @@ export default {
     },
     // 表单值
     formMenu: {
-      type:Object,
-      default:()=>{
-        return{
+      type: Object,
+      default: () => {
+        return {
           pid: "", // 父级Id
           is_point: "", // 是否权限点
           code: "", // 菜单代码
           title: "", // 标题
-        }
-      }
+        };
+      },
     },
     // 单选框状态
-    typeStatus:{
-      type:Boolean,
-      default:false
-    }
+    typeStatus: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     const validateCode = (rule, value, callback) => {
@@ -243,12 +243,15 @@ export default {
     // 退出
     handleClose() {
       this.$emit("handleCloseModal");
+      this.$refs.formMenu.resetFields();
     },
     // 菜单和权限点选择：编辑
     handle_Edit(object) {
       update(this.formMenu).then(() => {
         this.$emit("handleCloseModal");
-         this.$emit("onSuccess");
+        this.$emit("onSuccess");
+        this.$refs.formMenu.resetFields();
+
         // this.$emit("newDataes", this.formMenu);
       });
     },
@@ -261,6 +264,7 @@ export default {
         this.$emit("handleCloseModal");
         // 添加成功刷新菜单
         this.$emit("onSuccess");
+        this.$refs.formMenu.resetFields();
         // this.$emit("newDataes", this.formMenu);
       });
     },

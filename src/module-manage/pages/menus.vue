@@ -93,7 +93,7 @@ export default {
         title: "", // 标题
       },
       dialogFormVisible: false,
-      typeStatus:false,
+      typeStatus: false,
     };
   },
 
@@ -107,6 +107,8 @@ export default {
       this.tableData = data;
     },
     addMenuFn() {
+      // 点击修改后再点击添加，单选框状态改回可用状态
+      this.typeStatus = false
       this.dialogFormVisible = true;
     },
     handleCloseModal() {
@@ -134,13 +136,13 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       })
-        .then(() => {
-          remove({ id });
+        .then(async () => {
+          await remove({ id });
+          this.getMenuList();
           this.$message({
             type: "success",
             message: "成功删除了用户!",
           });
-          this.getMenuList();
         })
         .catch(() => {
           this.$message({
@@ -164,7 +166,7 @@ export default {
         pid: data.pid,
       };
       this.dialogFormVisible = true;
-      this.typeStatus = true
+      this.typeStatus = true;
     },
   },
 };
