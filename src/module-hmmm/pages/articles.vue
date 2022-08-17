@@ -82,12 +82,12 @@
             <el-button type="text" @click="previewShow(row)">预览</el-button>
             <el-button
               type="text"
-              v-if="row.state === 1"
+              v-if="row.state === 0"
               @click="changState(row.id, row.state)"
-              >禁用</el-button
+              >启用</el-button
             >
             <el-button type="text" v-else @click="changState(row.id, row.state)"
-              >启用</el-button
+              >禁用</el-button
             >
             <el-button
               type="text"
@@ -252,6 +252,7 @@ export default {
         title: row.title,
         articleBody: row.articleBody,
         videoURL: row.videoURL,
+        id: row.id,
       };
     },
     videoBtn(url) {
