@@ -23,6 +23,7 @@
             >
               >
             </quill-editor>
+            <!-- <quill @blur="onBlurCheck" ref="quill"></quill> -->
           </div>
         </el-form-item>
         <el-form-item label="视频地址">
@@ -38,7 +39,7 @@
 </template>
 
 <script>
-// 引入样式和quillEditor
+// 引入样式和quillEditor;
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
@@ -77,7 +78,7 @@ const toolbarOptions = [
   // 清除文本格式-----['clean']
   // ["clean"],
 ];
-
+// import quill from "@/components/quill";
 export default {
   data() {
     return {
@@ -112,6 +113,7 @@ export default {
     // 弹层隐藏
     dialogFormH() {
       this.dialogFormVisible = false;
+      this.$refs.form.resetFields();
     },
     // // 内容改变事件
     // onEditorChange(e) {
@@ -121,13 +123,16 @@ export default {
       this.$refs.form.validateField("articleBody");
     },
     async onSave() {
-      this.dialogFormVisible = false;
       await add(this.form);
+      this.$refs.form.resetFields();
+      this.dialogFormVisible = false;
       this.$message.success("添加成功");
+      this.$emit("update");
     },
   },
   components: {
     quillEditor,
+    // quill,
   },
 };
 </script>

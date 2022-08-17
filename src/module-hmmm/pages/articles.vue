@@ -116,7 +116,7 @@
         :previewData="previewData"
       ></articles-preview>
       <!-- 新增文章弹框 -->
-      <articles-add ref="add"></articles-add>
+      <articles-add ref="add" @update="getList(resData)"></articles-add>
       <!-- 视频弹框 -->
       <el-dialog title="视频预览" :visible.sync="videoShow" @close="closeFn">
         <video
@@ -214,7 +214,7 @@ export default {
         articleBody: "",
         videoURL: "",
       };
-      this.getList(this.resData);
+      // this.getList(this.resData);
     },
     // 预览
     previewShow(row) {
