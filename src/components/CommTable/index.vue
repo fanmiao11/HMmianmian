@@ -30,6 +30,15 @@
     >
       <template slot-scope="scope">
         <div v-if="item.label === '题干'" v-html="scope.row.question"></div>
+        <div v-else-if="item.label === '题目编号'">
+          <div v-for="(item, index) in scope.row.questionIDs" :key="index">
+            <a href="#" style="color: rgb(0, 153, 255)"
+            @click="$emit('preview',item)"
+            >
+              {{ item.number }}
+            </a>
+          </div>
+        </div>
         <div
           v-else
           v-html="formatter(scope.row, scope.column, scope.row[item.prop])"

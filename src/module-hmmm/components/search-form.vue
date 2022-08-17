@@ -265,12 +265,6 @@ export default {
 .search-form {
   background: #fff;
 }
-.el-col {
-  // display: flex;
-  // justify-content: flex-end;
-  // white-space: nowrap;
-}
-// ::v-deep.el-form-item .el-form-item__content,
 .el-select {
   width: 100%;
 }

@@ -36,6 +36,7 @@
         type="info"
         show-icon
         style="margin-bottom: 15px"
+        :closable="false"
       />
       <!-- 表格 -->
       <comm-table
@@ -231,10 +232,13 @@ export default {
     // 预览
     async preview({ row }) {
       // console.log(row);
-    const { data} = await detail(row)
-      this.detailInfo = data
-      console.log(this.detailInfo);
-      this.isShowDialogPreveiew = true
+      this.isShowDialogPreveiew = true;
+      try{
+        const { data } = await detail(row);
+      this.detailInfo = data;
+      }catch{
+        this.$message.error('暂无数据');
+      }
     },
     // 审核
     chk({ row }) {
@@ -299,7 +303,7 @@ export default {
     },
     // 删除
     delquestion({ row }) {
-      console.log("删除");
+      // console.log("删除");
       this.$confirm(`此操作将永久删除该题目，是否继续?`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
