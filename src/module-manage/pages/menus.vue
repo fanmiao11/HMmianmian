@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="container">
     <el-card>
       <!-- 搜索 -->
-      <SeachTool btnText="添加菜单" :isShowLeft="false" />
+      <SeachTool btnText="添加菜单" :isShowLeft="false" @onsave="addMenuFn" />
       <br />
       <!-- 表单 -->
 
@@ -10,25 +10,22 @@
         :treeStructure="true"
         :data="tableData"
         :columns="columns"
-        :defaultExpandAll="true"
+        @handleUpdate="handleUpdate"
+        @handleDelete="handleDelete"
       />
-
-      <!-- 
-
-
-
-       -->
+      <!-- :defaultExpandAll="true" -->
     </el-card>
     <!-- 添加弹层 -->
-    <!-- <MenuAdd
+    <MenuAdd
       :text="text"
       :pageTitle="pageTitle"
       :ruleInline="ruleInline"
-      :formBase="formBase"
+      :formMenu="formBase"
       :dialogFormVisible="dialogFormVisible"
+      :typeStatus="typeStatus"
       @handleCloseModal="handleCloseModal"
       @onSuccess="onSuccess"
-    /> -->
+    />
   </div>
 </template>
 
@@ -39,27 +36,41 @@ import SeachTool from "../components/SeachTool.vue";
 import { list, remove, detail } from "@/api/base/menus";
 
 export default {
+  components: {
+    SeachTool,
+    MenuAdd,
+    TreeTable,
+  },
   data() {
     return {
       tableData: [],
       columns: [
         {
           text: "标题",
-          value: "title",
+          prop: "title",
           width: 200,
           render: (h, params) => {
+            // console.log(params.row);
+            let icon = "";
+            // 如果是权限点 小眼睛图标
+            if (params.row.is_point) icon = "el-icon-view";
+            // 如果不是权限点 也没有childs
+            else if (!params.row.childs) icon = "el-icon-document-remove";
+            // 如果有childs
+            else icon = "el-icon-folder-opened";
             return h("div", [
-              h("i", {
-                class: "ivu-icon " + params.row.icon,
-                // class: "el-icon-view",
-
+              h("span", {
+                // 图标
+                class: icon,
+                // 标题样式
                 style: {
-                  marginLeft: `${20 * params.row.layer}px`,
+                  marginLeft: `${20 * params.row._level}px`,
                   marginRight: "5px",
                   fontSize: "16px",
                 },
               }),
-              h("i", params.row.title),
+              // 标题内容
+              h("span", params.row.title),
             ]);
           },
         },
@@ -73,59 +84,95 @@ export default {
       ruleInline: {},
       formBase: {
         id: 0,
-        create_date: "",
-        title: "",
-        permissions: [],
+        // create_date: "",
+        // title: "",
+        // permissions: [],
+        pid: "", // 父级Id
+        is_point: "", // 是否权限点
+        code: "", // 菜单代码
+        title: "", // 标题
       },
       dialogFormVisible: false,
+      typeStatus:false,
     };
   },
 
   created() {
     this.getMenuList();
   },
-  components: {
-    SeachTool,
-    MenuAdd,
-    TreeTable,
-  },
   methods: {
     async getMenuList() {
       const { data } = await list();
+      // console.log(data);
       this.tableData = data;
-
-      console.log(data);
+    },
+    addMenuFn() {
+      this.dialogFormVisible = true;
     },
     handleCloseModal() {
       this.dialogFormVisible = false;
       this.formBase = {
         id: 0,
-        create_date: "",
-        title: "",
-        permissions: [],
+        // create_date: "",
+        // title: "",
+        // permissions: [],
+        pid: "", // 父级Id
+        is_point: "", // 是否权限点
+        code: "", // 菜单代码
+        title: "", // 标题
       };
     },
     onSuccess() {
-      this.getPermissionsList();
+      this.getMenuList();
     },
 
     // 删除
-    async deletePermission(row) {
-      await this.$confirm("是否删除该数据？");
-      await remove(row);
-      this.getPermissionsList();
+    async handleDelete(id) {
+      console.log("删除");
+      this.$confirm("此操作将永久删除用户, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          remove({ id });
+          this.$message({
+            type: "success",
+            message: "成功删除了用户!",
+          });
+          this.getMenuList();
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消操作",
+          });
+        });
     },
     // 修改
-    async updatePermission(row) {
+    async handleUpdate(row) {
+      console.log("编辑");
       this.text = "编辑";
+      const { data } = await detail({ id: row.id });
 
-      const { data } = await detail(row);
-
-      this.formBase = data;
+      console.log(data);
+      this.formBase = {
+        id: data.id,
+        is_point: data.is_point,
+        code: data.code,
+        title: data.title,
+        pid: data.pid,
+      };
       this.dialogFormVisible = true;
+      this.typeStatus = true
     },
   },
 };
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.container {
+  padding: 0 10px;
+  margin: 10px 0;
+}
+</style>

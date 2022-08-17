@@ -102,7 +102,7 @@ export default {
           null,
           me.defaultExpandAll
         );
-        console.log(data);
+        // console.log(data);
         return data;
       }
       return me.data;
@@ -115,8 +115,8 @@ export default {
     handleUpdate(row) {
       this.$emit("handleUpdate", row);
     },
-    handleDelete(user) {
-      this.$emit("removeUser", user);
+    handleDelete(id) {
+      this.$emit("handleDelete", id);
     },
   },
 };
