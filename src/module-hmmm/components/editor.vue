@@ -5,7 +5,7 @@
  * @email: 1373842098@qq.com
  * @Date: 2022-08-15 23:47:55
  * @LastEditors: sj
- * @LastEditTime: 2022-08-17 20:48:08
+ * @LastEditTime: 2022-08-18 00:27:53
 -->
 <template>
   <div style="border: 1px solid #ccc">
@@ -26,11 +26,6 @@
 </template>
 
 <script>
-import COS from "cos-js-sdk-v5";
-var cos = new COS({
-  SecretId: "AKIDA7oENFqADzVkhOpyqRL0OVKtBCvOZT6R",
-  SecretKey: "6vTklVyA5i48vSigNoyqSotiFVVEfpiL",
-});
 // import { IEditorConfig } from '@wangeditor/editor'
 const editorConfig = {
   // JS 语法
