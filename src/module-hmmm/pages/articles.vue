@@ -49,7 +49,17 @@
       >
         <el-table-column type="index" label="序号" width="80">
         </el-table-column>
-        <el-table-column prop="title" label="文章标题"> </el-table-column>
+        <el-table-column label="文章标题">
+          <template slot-scope="{ row }">
+            {{ row.title }}
+            <i
+              v-if="row.videoURL"
+              class="el-icon-film"
+              style="color: #00f; font-size: 18px"
+              @click="videoBtn(row.videoURL)"
+            ></i
+          ></template>
+        </el-table-column>
         <el-table-column prop="visits" label="阅读数" width="80">
         </el-table-column>
         <el-table-column prop="username" label="录入人" width="130">
@@ -107,6 +117,17 @@
       ></articles-preview>
       <!-- 新增文章弹框 -->
       <articles-add ref="add"></articles-add>
+      <!-- 视频弹框 -->
+      <el-dialog title="视频预览" :visible.sync="videoShow" @close="closeFn">
+        <video
+          :src="videoURL"
+          controls
+          autoplay
+          class="video"
+          ref="dialogvideo"
+          width="100%"
+        ></video>
+      </el-dialog>
     </el-card>
   </div>
 </template>
@@ -131,6 +152,8 @@ export default {
       },
       count: 1, // 数据总数
       previewData: {},
+      videoURL: "",
+      videoShow: false,
     };
   },
 
@@ -191,6 +214,7 @@ export default {
         articleBody: "",
         videoURL: "",
       };
+      this.getList(this.resData);
     },
     // 预览
     previewShow(row) {
@@ -229,6 +253,13 @@ export default {
         articleBody: row.articleBody,
         videoURL: row.videoURL,
       };
+    },
+    videoBtn(url) {
+      this.videoShow = true;
+      this.videoURL = url;
+    },
+    closeFn() {
+      this.videoURL = "";
     },
   },
 
