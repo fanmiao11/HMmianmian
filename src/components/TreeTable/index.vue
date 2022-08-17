@@ -1,8 +1,20 @@
 <template>
-    <el-table :data="formatData"  :row-class-name="rowClassStatus" v-loading="listLoading"  element-loading-text="给我一点时间" fit highlight-current-row
-      style="width: 100%">
-    <el-table-column v-for="(column, index) in columns" :key="column.prop" :width="column.width" :prop="column.prop"
-      :label="column.text">
+  <el-table
+    :data="formatData"
+    :row-class-name="rowClassStatus"
+    v-loading="listLoading"
+    element-loading-text="给我一点时间"
+    fit
+    highlight-current-row
+    style="width: 100%"
+  >
+    <el-table-column
+      v-for="(column, index) in columns"
+      :key="column.prop"
+      :width="column.width"
+      :prop="column.prop"
+      :label="column.text"
+    >
       <template slot-scope="scope">
         <expand
           v-if="column.render"
@@ -13,23 +25,27 @@
         >
         </expand>
         <span v-else>
-          {{scope.row[column.value]}}
+          {{ scope.row[column.value] }}
         </span>
       </template>
     </el-table-column>
     <el-table-column label="操作" width="260" align="center">
-      <template  slot-scope="scope">
+      <template slot-scope="scope">
         <el-button
-          size="mini"
           type="primary"
-          @click="handleUpdate(scope.row)">
-          修改
+          icon="el-icon-edit"
+          circle
+          :plain="true"
+          @click="handleUpdate(scope.row)"
+        >
         </el-button>
         <el-button
-          size="mini"
           type="danger"
-          @click="handleDelete(scope.row.id)">
-          删除
+          icon="el-icon-delete"
+          circle
+          :plain="true"
+          @click="handleDelete(scope.row.id)"
+        >
         </el-button>
       </template>
     </el-table-column>
@@ -37,71 +53,77 @@
 </template>
 
 <script>
-import Utils from './utils/dataTranslate.js'
-import expand from './utils/expand'
+import Utils from "./utils/dataTranslate.js";
+import expand from "./utils/expand";
 export default {
-  name: 'treeTable',
+  name: "treeTable",
   components: { expand },
   props: {
     // 该属性是确认父组件传过来的数据是否已经是树形结构了，如果是，则不需要进行树形格式化
     treeStructure: {
       type: Boolean,
       default: function () {
-        return false
-      }
+        return false;
+      },
     },
     data: {
       type: Array,
       default: function () {
-        return []
-      }
+        return [];
+      },
     },
     // 这是相应的字段展示
     columns: {
       type: Array,
       default: function () {
-        return []
-      }
+        return [];
+      },
     },
     listLoading: {
       type: Boolean,
-      default: false
+      default: false,
     },
     // 是否默认展开所有树
     defaultExpandAll: {
       type: Boolean,
       default: function () {
-        return true
-      }
-    }
+        return true;
+      },
+    },
   },
   computed: {
     // 格式化数据源
     formatData: function () {
-      const me = this
+      const me = this;
       if (me.treeStructure) {
-        const data = Utils.treeToArray(me.data, null, null, me.defaultExpandAll)
-        return data
+        const data = Utils.treeToArray(
+          me.data,
+          null,
+          null,
+          me.defaultExpandAll
+        );
+        console.log(data);
+        return data;
       }
-      return me.data
-    }
+      return me.data;
+    },
   },
   methods: {
     rowClassStatus: function () {
-      this.$emit('rowClassStatus')
+      this.$emit("rowClassStatus");
     },
-    handleUpdate (row) {
-      this.$emit('handleUpdate', row)
+    handleUpdate(row) {
+      this.$emit("handleUpdate", row);
     },
-    handleDelete (user) {
-      this.$emit('removeUser', user)
-    }
-  }
-}
+    handleDelete(user) {
+      this.$emit("removeUser", user);
+    },
+  },
+};
 </script>
 <style rel="stylesheet/css">
 .ivu-icon-ios-folder-outline {
-  content: '\F434';
+  content: "\F434";
 }
 @keyframes treeTableShow {
   from {
@@ -134,7 +156,7 @@ $space-width: 18px;
   width: $space-width;
   height: 14px;
   &::before {
-    content: '';
+    content: "";
   }
 }
 .processContainer {
