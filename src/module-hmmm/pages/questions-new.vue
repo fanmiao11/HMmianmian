@@ -5,7 +5,7 @@
  * @email: 1373842098@qq.com
  * @Date: 2022-08-12 20:57:16
  * @LastEditors: sj
- * @LastEditTime: 2022-08-17 23:59:59
+ * @LastEditTime: 2022-08-18 10:33:47
 -->
 <template>
   <div class="container">
@@ -220,7 +220,7 @@ import { list as companysList } from "@/api/hmmm/companys.js";
 import { simple as simpleTagsList } from "@/api/hmmm/tags.js";
 import { provinces, citys } from "@/api/hmmm/citys.js";
 import { direction, questionType, difficulty } from "@/api/hmmm/constants.js";
-import { add, detail } from "@/api/hmmm/questions.js";
+import { add, detail,update } from "@/api/hmmm/questions.js";
 export default {
   data() {
     return {
@@ -289,10 +289,12 @@ export default {
   methods: {
     async detailQuestionInfo(val) {
       const { data } = await detail(val);
-      console.log(data);
+      // console.log(data);
       this.subjectChange(data.subjectID);
       this.optionRadio = data.options.find(item => item.isRight==1)?.code
       this.formData = {...data,tags: data.tags.split(',')};
+      this.$refs.editor.html = this.formData.answer;
+      this.$refs.editorQ.html = this.formData.question;
     },
     // 获取学科列表
     async getSubjectsList() {
@@ -396,9 +398,11 @@ export default {
             ...this.formData,
             tags: this.formData.tags.toString(),
           };
-          await add(data);
           if(this.$route.query.id){
+            await update(data)
             this.$router.push('/questions/list')
+          } else {
+            await add(data);
           }
           this.$message.success( msg+"成功");
           this.$refs.form.resetFields();
