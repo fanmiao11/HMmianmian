@@ -10,7 +10,7 @@
 <template>
   <div class="container">
     <el-card class="card">
-      <div class="header">{{ $route.query.title || "试题录入" }}</div>
+      <div class="header">{{ $route.query.title || "试题录入" }} --- 胡纯</div>
       <div class="body">
         <el-form
           label-width="120px"
