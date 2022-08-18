@@ -5,7 +5,7 @@
  * @email: 1373842098@qq.com
  * @Date: 2022-08-12 20:57:16
  * @LastEditors: sj
- * @LastEditTime: 2022-08-17 23:37:16
+ * @LastEditTime: 2022-08-18 10:14:44
 -->
 <template>
   <div class='container'>
@@ -56,9 +56,9 @@
 
    <div>
     <span>【参考答案】：</span>
-    <el-button type="danger" @click="onShoeVideo(detailInfo.videoURL)">视频答案预览</el-button>
+    <el-button type="danger" @click="onShowVideo(detailInfo.videoURL)">视频答案预览</el-button>
     <br>
-    <video controls width="400" height="300" :src="detailInfo.videoURL" v-if="isShoeVideo" muted autoplay></video>
+    <video controls width="400" height="300" :src="detailInfo.videoURL" v-if="isShowVideo" muted autoplay></video>
    </div>
    <hr>
 
@@ -85,7 +85,7 @@ export default {
   data(){
     return {
       radio: 1,
-      isShoeVideo: false,
+      isShowVideo: false,
     }
   },
   props:{
@@ -99,8 +99,8 @@ export default {
     }
   },
   methods:{
-    onShoeVideo(url){
-      this.isShoeVideo = !!url;
+    onShowVideo(url){
+      this.isShowVideo = !!url;
     },
     onChange(){
       this.radio =1
