@@ -2,8 +2,13 @@
   <div>
     <el-card>
       <!-- 搜索 -->
-      <SeachTool btnText="新增权限组" @onsave="dialogFormVisible = true">
-        <span slot="downtag"> 共{{ total }}条记录</span>
+      <SeachTool
+        btnText="新增权限组"
+        @onsave="dialogFormVisible = true"
+        @newDataes="onSuccess"
+        @onSeach="onSeach"
+      >
+        <span slot="downtag"> 共{{ total }}条记录-----沈寅武</span>
       </SeachTool>
       <br />
       <!-- 表单 -->
@@ -120,6 +125,20 @@ export default {
 
       this.formBase = data;
       this.dialogFormVisible = true;
+    },
+    // 搜索
+    async onSeach(val) {
+      const { data } = await list({
+        page: this.paginationPage,
+        pagesize: this.paginationPagesize,
+      });
+      const arr = [];
+      data.list.forEach((item) => {
+        if (item.title.search(val) !== -1) {
+          arr.push(item);
+        }
+      });
+      this.tableData = arr;
     },
   },
 };
