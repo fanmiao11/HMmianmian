@@ -2,7 +2,12 @@
   <div>
     <el-card>
       <!-- 搜索 -->
-      <SeachTool btnText="新增权限组" @onsave="dialogFormVisible = true">
+      <SeachTool
+        btnText="新增权限组"
+        @onsave="dialogFormVisible = true"
+        @newDataes="onSuccess"
+        @onSeach="onSeach"
+      >
         <span slot="downtag"> 共{{ total }}条记录-----沈寅武</span>
       </SeachTool>
       <br />
