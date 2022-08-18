@@ -5,7 +5,7 @@
  * @email: 1373842098@qq.com
  * @Date: 2022-08-12 20:57:16
  * @LastEditors: sj
- * @LastEditTime: 2022-08-15 09:31:10
+ * @LastEditTime: 2022-08-18 10:14:44
 -->
 <template>
   <div class='container'>
@@ -56,9 +56,9 @@
 
    <div>
     <span>【参考答案】：</span>
-    <el-button type="danger" @click="onShoeVideo(detailInfo.videoUR)">视频答案预览</el-button>
+    <el-button type="danger" @click="onShowVideo(detailInfo.videoURL)">视频答案预览</el-button>
     <br>
-    <video controls width="400" height="300" :src="detailInfo.videoURL" v-if="isShoeVideo" muted autoplay></video>
+    <video controls width="400" height="300" :src="detailInfo.videoURL" v-if="isShowVideo" muted autoplay></video>
    </div>
    <hr>
 
@@ -85,7 +85,7 @@ export default {
   data(){
     return {
       radio: 1,
-      isShoeVideo: false,
+      isShowVideo: false,
     }
   },
   props:{
@@ -99,10 +99,8 @@ export default {
     }
   },
   methods:{
-    onShoeVideo(url){
-     if(url) {
-      this.isShoeVideo = true;
-     }
+    onShowVideo(url){
+      this.isShowVideo = !!url;
     },
     onChange(){
       this.radio =1
@@ -116,15 +114,7 @@ export default {
      return formatConstants(difficulty,this.detailInfo.difficulty)
     },
     checkList(){
-      let checkList=[]
-      this.detailInfo.options.filter(item=>{
-        if(item.isRight==1){
-          return checkList.push(item.title)
-        }
-        return false
-        })
-
-      return checkList
+     return this.detailInfo.options.filter(item=>item.isRight==1).map(v => v.title)
     }
   }
 }

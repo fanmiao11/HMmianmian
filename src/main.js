@@ -1,3 +1,12 @@
+/*
+ * @Descripttion:
+ * @version:
+ * @Author: suiyue
+ * @email: 1373842098@qq.com
+ * @Date: 2022-08-15 15:39:22
+ * @LastEditors: sj
+ * @LastEditTime: 2022-08-16 00:10:02
+ */
 import Vue from 'vue'
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 import Element from 'element-ui'
@@ -19,6 +28,14 @@ import "font-awesome/css/font-awesome.css";
 import dashboard from "@/module-dashboard/"; // 面板
 import base from "@/module-manage/"; // 用户管理
 import hmmm from "@/module-hmmm/"; // 黑马面面
+
+/*
+ * 富文本编辑器
+ */
+import "@wangeditor/editor/dist/css/style.css"
+import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+Vue.component('Editor', Editor)
+Vue.component('Toolbar', Toolbar)
 
 Vue.use(dashboard, store);
 Vue.use(base, store);

@@ -5,14 +5,14 @@
  * @email: 1373842098@qq.com
  * @Date: 2022-08-12 20:57:16
  * @LastEditors: sj
- * @LastEditTime: 2022-08-15 15:27:08
+ * @LastEditTime: 2022-08-18 11:59:41
 -->
 <template>
   <div class='container'>
     <el-card>
        <!-- 新增试题按钮 -->
        <div class="btn_wrapper">
-        <el-button type="success" icon="el-icon-edit" @click="$router.push('/questions/new')">新增试题</el-button>
+        <el-button type="success" icon="el-icon-edit" @click="toAddQuestion">新增试题</el-button>
        </div>
       <!-- 搜索 -->
       <SearchForm @search="onSearch"/>
@@ -108,7 +108,11 @@ export default {
     },
     // 点击查询
     onSearch(info){
-      this.getList({...info,...this.pagesize})
+      let res ={}
+      for(let k in info){
+        if(info[k]){ res = info}
+      }
+     this.getList({...res,...this.pagesize})
     },
     // 去修改试题
     toEdit(id){
@@ -116,7 +120,8 @@ export default {
         {
           name: 'questions-new',
           query:{
-            id
+            id,
+            title: "修改试题"
           }
         }
       )
@@ -157,13 +162,21 @@ export default {
         }).catch(() => {
 
         });
+    },
+    toAddQuestion(){
+      this.$router.push({
+        path:'/questions/new',
+        query:{
+          title: '试题录入'
+        }
+        })
     }
   },
       components:{
     CommTable,
     Pagination,
     SearchForm,
-    QuestionsPreview
+    QuestionsPreview,
   }
 }
 </script>
@@ -177,6 +190,7 @@ export default {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  margin-bottom: 15px;
   span {
         font-size: 12px;
     color: pink
