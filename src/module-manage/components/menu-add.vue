@@ -98,7 +98,7 @@ export default {
       default: false,
     },
     // 表单值
-    formMenu: {
+    formBase: {
       type: Object,
       default: () => {
         return {
@@ -159,12 +159,12 @@ export default {
       // typeStatus: false,
       notPointDataList: [],
       parentDataList: [],
-      // formMenu: {
-      //   pid: "", // 父级Id
-      //   is_point: "", // 是否权限点
-      //   code: "", // 菜单代码
-      //   title: "", // 标题
-      // },
+      formMenu: {
+        pid: "", // 父级Id
+        is_point: "", // 是否权限点
+        code: "", // 菜单代码
+        title: "", // 标题
+      },
       formPoints: {
         pid: "", // 父级Id
         is_point: "", // 是否权限点
@@ -371,6 +371,7 @@ export default {
       this.dataRest(data.data);
       _this.changeToMenu();
     });
+    _this.formMenu=_this.formBase
   },
   // 组件更新
   updated: function () {},
