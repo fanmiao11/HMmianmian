@@ -11,8 +11,10 @@
           <el-form-item style="width: 200px">
             <el-input v-model="seach" placeholder="根据用户名搜索"></el-input>
           </el-form-item>
-          <el-button plain size="small">清除</el-button>
-          <el-button type="primary" size="small">搜索</el-button>
+          <el-button plain size="small" @click="onRemove">清除</el-button>
+          <el-button type="primary" size="small" @click="onSeach"
+            >搜索</el-button
+          >
         </el-form>
       </el-col>
       <el-col>
@@ -63,7 +65,15 @@ export default {
   },
   created() {},
 
-  methods: {},
+  methods: {
+    onRemove() {
+      this.seach = "";
+      this.$emit("newDataes");
+    },
+    onSeach() {
+      this.$emit("onSeach", this.seach);
+    },
+  },
 };
 </script>
 
