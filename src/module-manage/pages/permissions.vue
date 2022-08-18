@@ -132,7 +132,7 @@ export default {
       });
       const arr = [];
       data.list.forEach((item) => {
-        if (item.username.search(val) !== -1) {
+        if (item.title.search(val) !== -1) {
           arr.push(item);
         }
       });
