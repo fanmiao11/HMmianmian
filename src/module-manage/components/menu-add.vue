@@ -38,8 +38,9 @@
               :key="items.id"
               :label="items.title"
               :disabled="type === 'points' && !!items.childs"
-              :class="'moveIn' + items.layer"
+              :style="{textIndent: 14+items.layer*14+'px'}"
             >
+              <!-- :class="'moveIn' + items.layer" -->
             </el-option>
           </el-select>
         </el-form-item>
@@ -213,12 +214,18 @@ export default {
       var changeAray = (oldArray) => {
         for (var i = 0; i < oldArray.length; i++) {
           // 数据没有code并且没有子元素时
+          if(oldArray[i].is_point){
+            continue
+          }
           if (oldArray[i].code !== undefined) {
             _this.notPointDataList.push(oldArray[i]);
           }
           // 数据有子元素时
           if (oldArray[i].childs && oldArray[i].childs.length > 0) {
             changeAray(oldArray[i].childs);
+          }else if (oldArray[i].points && oldArray[i].points.length > 0) {
+
+            changeAray(oldArray[i].points);
           }
         }
       };
@@ -308,15 +315,35 @@ export default {
     },
     // 表单详情
     dataRest(obj) {
-      for (var i = 0; i < obj.length; i++) {
-        if (obj[i].childs && obj[i].childs.length > 0) {
-          for (var j = 0; j < obj[i].childs.length; j++) {
-            this.$set(obj[i].childs[j], "layer", 1);
+      // 权限组名称
+      // console.log(obj);
+      // for (var i = 0; i < obj.length; i++) {
+      //   if (obj[i].childs && obj[i].childs.length > 0) {
+      //     for (var j = 0; j < obj[i].childs.length; j++) {
+      //       this.$set(obj[i].childs[j], "layer", 1);
+      //     }
+      //   }
+      //   this.$set(obj[i], "layer", 0);
+      // }
+      const menusCheck = (obj, layer) => {
+        obj.forEach((item) => {
+          this.$set(item, "layer", layer);
+          // console.log(item);
+          if (item.childs && item.childs.length > 0) {
+            // console.log(item);
+            let level = layer + 1;
+            // item.childs.forEach((item) => {
+            //   this.$set(item, "layer", layer);
+            // });
+            menusCheck(item.childs, level);
+          } else if (item.points && item.points.length > 0) {
+            // 菜单下有权限点
+            let level = layer + 1;
+            menusCheck(item.points, level);
           }
-        }
-
-        this.$set(obj[i], "layer", 0);
-      }
+        });
+      };
+      menusCheck(obj, 0);
     },
     hanldeEditForm(objeditId) {
       this.formMenu.id = objeditId;
@@ -371,7 +398,7 @@ export default {
       this.dataRest(data.data);
       _this.changeToMenu();
     });
-    _this.formMenu=_this.formBase
+    _this.formMenu = _this.formBase;
   },
   // 组件更新
   updated: function () {},

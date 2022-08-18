@@ -90,6 +90,7 @@
           end-placeholder="结束日期"
           :picker-options="pickerOptions2">
         </el-date-picker>
+        
       </div>
       <el-tabs v-model="activeName" @tab-click="handleSetLineChartData">
         <el-tab-pane label="销售额" name="newVisitis"></el-tab-pane>
@@ -271,6 +272,7 @@ export default {
             }
           }
         ]
+   
       },
       salesTable: [],
       hotsTableData: [],
