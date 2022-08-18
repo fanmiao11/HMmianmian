@@ -5,7 +5,7 @@
  * @email: 1373842098@qq.com
  * @Date: 2022-08-12 20:57:16
  * @LastEditors: sj
- * @LastEditTime: 2022-08-17 22:22:27
+ * @LastEditTime: 2022-08-18 11:59:41
 -->
 <template>
   <div class='container'>
@@ -108,7 +108,11 @@ export default {
     },
     // 点击查询
     onSearch(info){
-      this.getList({...info,...this.pagesize})
+      let res ={}
+      for(let k in info){
+        if(info[k]){ res = info}
+      }
+     this.getList({...res,...this.pagesize})
     },
     // 去修改试题
     toEdit(id){
