@@ -1,3 +1,12 @@
+<!--
+ * @Descripttion:
+ * @version:
+ * @Author: suiyue
+ * @email: 1373842098@qq.com
+ * @Date: 2022-08-13 17:14:46
+ * @LastEditors: sj
+ * @LastEditTime: 2022-08-13 17:49:44
+-->
 <template>
   <!-- 分页组件 -->
   <div class="pagination">
@@ -9,6 +18,7 @@
       :page-size="pageSize"
       :page-sizes="pageSizes"
       :total="total"
+      :hide-on-single-page='true'
     >
     </el-pagination>
   </div>
@@ -29,8 +39,8 @@ export default {
     // 数据总条数
     total: {
       type: Number,
-      // required:true
-      default: 20,
+      required:true
+      // default: 20,
     },
   },
   methods: {
