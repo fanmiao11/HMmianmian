@@ -150,6 +150,7 @@
       <my-pagination
         @pageChange="pageChange"
         @pageSizeChange="pageSizeChange"
+        :total="counts"
       ></my-pagination>
     </el-card>
     <add-companys
@@ -173,7 +174,7 @@ export default {
   data() {
     return {
       tableData: [], // 表格内容
-      counts: "",
+      counts: 0,
       // 用于请求table列表数据
       reqListParams: {
         page: 1, //当前页数
