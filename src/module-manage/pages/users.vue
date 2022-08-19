@@ -123,7 +123,8 @@ export default {
     async deletePermission(row) {
       await this.$confirm("是否删除该数据？");
       await remove(row);
-      this.getPermissionsList();
+      // this.getPermissionsList();
+      this.pageChange(1)
     },
     // 修改
     async updatePermission(row) {

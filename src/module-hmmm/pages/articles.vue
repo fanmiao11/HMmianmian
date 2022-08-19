@@ -234,7 +234,8 @@ export default {
             message: "删除成功!",
           });
           remove(row);
-          this.getList(this.resData);
+          this.pageChange(1)
+          // this.getList(this.resData);
         })
         .catch(() => {
           this.$message({
