@@ -1,11 +1,11 @@
 <template>
   <div class="container">
     <el-card>
+      --- 范苗
       <!-- 搜索 -->
       <SeachTool btnText="添加菜单" :isShowLeft="false" @onsave="addMenuFn" />
       <br />
       <!-- 表单 -->
-
       <TreeTable
         :treeStructure="true"
         :data="tableData"
@@ -20,7 +20,7 @@
       :text="text"
       :pageTitle="pageTitle"
       :ruleInline="ruleInline"
-      :formMenu="formBase"
+      :formBase="formBase"
       :dialogFormVisible="dialogFormVisible"
       :typeStatus="typeStatus"
       @handleCloseModal="handleCloseModal"
@@ -55,9 +55,21 @@ export default {
             // 如果是权限点 小眼睛图标
             if (params.row.is_point) icon = "el-icon-view";
             // 如果不是权限点 也没有childs
-            else if (!params.row.childs) icon = "el-icon-document-remove";
+            // else if (!params.row.childs) icon = "el-icon-document-remove";
             // 如果有childs
-            else icon = "el-icon-folder-opened";
+            else if (params.row.childs) icon = "el-icon-folder-opened";
+            // 如果菜单下面有菜单和权限点 遍历points 如果points中有！is_point 说明下面不止权限点 还有菜单 显示文件夹图标
+            else if (params.row.points) {
+              params.row.points.find((item) => {
+                if (!item.is_point) {
+                  icon = "el-icon-folder-opened";
+                } else {
+                  icon = "el-icon-document-remove";
+                }
+              });
+            } else {
+              icon = "el-icon-document-remove";
+            }
             return h("div", [
               h("span", {
                 // 图标
@@ -108,7 +120,7 @@ export default {
     },
     addMenuFn() {
       // 点击修改后再点击添加，单选框状态改回可用状态
-      this.typeStatus = false
+      this.typeStatus = false;
       this.dialogFormVisible = true;
     },
     handleCloseModal() {
@@ -153,11 +165,10 @@ export default {
     },
     // 修改
     async handleUpdate(row) {
-      console.log("编辑");
+      // console.log("编辑");
       this.text = "编辑";
       const { data } = await detail({ id: row.id });
-
-      console.log(data);
+      // console.log(data);
       this.formBase = {
         id: data.id,
         is_point: data.is_point,

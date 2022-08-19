@@ -237,6 +237,8 @@ export default {
     clearForm() {
       //   console.log("清除");
       // this.$emit('')
+      this.directoryOptions=[]
+      this.tagsOptions=[]
       this.formInline = {
         subjectID: "", //学科
         catalogID: "", //目录

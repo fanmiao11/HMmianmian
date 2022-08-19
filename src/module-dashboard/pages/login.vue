@@ -120,9 +120,9 @@ export default {
                 .update(this.loginForm.password)
                 .digest("hex"),
             })
-            .then(() => {
+            .then(async () => {
               this.loading = false;
-              this.$router.push({ path: "/" });
+              await this.$router.push({ path: "/" });
             })
             .catch(() => {
               this.loading = false;
@@ -159,6 +159,7 @@ $light_gray: #333;
       height: 47px;
       &:-webkit-autofill {
         -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
+        box-shadow: inset 0 0 0px 1000px $bg;
         -webkit-text-fill-color: #fff !important;
       }
     }
