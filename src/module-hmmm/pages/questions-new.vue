@@ -5,7 +5,7 @@
  * @email: 1373842098@qq.com
  * @Date: 2022-08-12 20:57:16
  * @LastEditors: sj
- * @LastEditTime: 2022-08-18 10:33:47
+ * @LastEditTime: 2022-08-18 12:51:46
 -->
 <template>
   <div class="container">
@@ -299,7 +299,7 @@ export default {
     // 获取学科列表
     async getSubjectsList() {
       const { data } = await subjectsList({ pagesize: 1000 });
-      // console.log(data);
+      console.log(data);
       this.subjectsList = data.items;
     },
     // 选择学科
