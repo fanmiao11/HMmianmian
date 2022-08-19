@@ -18,7 +18,7 @@
       :page-size="pageSize"
       :page-sizes="pageSizes"
       :total="total"
-      :hide-on-single-page='true'
+      :hide-on-single-page='isHidePage'
     >
     </el-pagination>
   </div>
@@ -42,6 +42,10 @@ export default {
       required:true
       // default: 20,
     },
+    isHidePage:{
+      type: Boolean,
+      default: true
+    }
   },
   methods: {
     // 进入某一页
