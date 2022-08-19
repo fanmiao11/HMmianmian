@@ -138,8 +138,8 @@ export default {
              type: 'success',
             message: '删除成功!'
           });
-
-          this.getList(this.pagesize)
+             this.toPage(1)
+          // this.getList(this.pagesize)
         }).catch(() => {
 
         });

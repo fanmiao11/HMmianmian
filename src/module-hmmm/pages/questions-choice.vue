@@ -313,7 +313,8 @@ export default {
           // 删除当前试题
           await remove(row);
           // 更新列表
-          this.getChoice();
+          this.pageChange(1)
+          // this.getChoice();
           // 操作成功提示
           this.$message({
             type: "success",

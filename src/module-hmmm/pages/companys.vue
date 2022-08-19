@@ -297,7 +297,8 @@ export default {
     },
     async delBtn(id) {
       await remove(id);
-      this.getTableList(this.reqListParams);
+      // this.getTableList(this.reqListParams);
+      this.pageChange(1)
     },
   },
   components: {

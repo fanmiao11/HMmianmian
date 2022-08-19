@@ -239,6 +239,7 @@ export default {
       // this.$emit('')
       this.directoryOptions=[]
       this.tagsOptions=[]
+      this.citysOptions=[]
       this.formInline = {
         subjectID: "", //学科
         catalogID: "", //目录

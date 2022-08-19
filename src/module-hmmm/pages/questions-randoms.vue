@@ -162,7 +162,8 @@ export default {
           // 删除当前试题
           await removeRandoms(row);
           // 更新列表
-          this.getRandoms();
+          this.pageChange(1)
+          // this.getRandoms();
           // 操作成功提示
           this.$message({
             type: "success",
