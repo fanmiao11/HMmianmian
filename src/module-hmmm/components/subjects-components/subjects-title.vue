@@ -2,9 +2,9 @@
   <div>
     <el-row class="breadcrumb" v-if="isBreadcrumb">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item>活动管理</el-breadcrumb-item>
-        <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-        <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+        <el-breadcrumb-item>学科管理</el-breadcrumb-item>
+        <el-breadcrumb-item>{{title2}}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{title3}}</el-breadcrumb-item>
       </el-breadcrumb>
     </el-row>
 
@@ -18,27 +18,39 @@
           class="demo-form-inline"
         >
           <el-form-item :label="seachName" style="width: 280px">
-            <el-input></el-input>
+            <el-input v-model="input"></el-input>
           </el-form-item>
 
           <el-form-item label="状态" v-if="isShowState">
-            <el-select placeholder="请选择" value="">
-              <el-option label="禁用" value="shanghai"></el-option>
-              <el-option label="启用" value="beijing"></el-option>
+            <el-select placeholder="请选择" v-model="value" value="">
+              <el-option label="禁用" value=0></el-option>
+              <el-option label="启用" value=1></el-option>
             </el-select>
           </el-form-item>
 
-          <el-button plain size="small">清除</el-button>
-          <el-button type="primary" size="small">搜索</el-button>
+          <el-button plain size="small" @click="clear">清除</el-button>
+          <el-button type="primary" size="small" @click="search"
+            >搜索</el-button
+          >
         </el-form>
       </el-col>
 
       <el-col :span="13">
         <el-row type="flex" justify="end">
-          <el-button type="text" icon="el-icon-back" v-if="isReturn"
-            >返回学科</el-button
+          <el-button
+            type="text"
+            icon="el-icon-back"
+            v-if="isReturn"
+            @click="goto"
           >
-          <el-button type="success" icon="el-icon-edit" size="small">
+            返回学科
+          </el-button>
+          <el-button
+            type="success"
+            icon="el-icon-edit"
+            size="small"
+            @click="add"
+          >
             {{ addname }}
           </el-button>
         </el-row>
@@ -56,7 +68,14 @@
 
 <script>
 export default {
+  name: "Title",
   props: {
+    title2:{
+      type: String
+    },
+    title3:{
+      type: String
+    },
     // 是否显显示面包屑默认不显示
     isBreadcrumb: {
       type: Boolean,
@@ -89,12 +108,33 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      input: "",
+      value: "",
+    };
   },
 
   created() {},
 
-  methods: {},
+  methods: {
+    // 添加
+    add() {
+      this.$emit("add");
+    },
+    // 清除
+    clear() {
+      this.input = "";
+      this.value = "";
+    },
+    // 搜索
+    search() {
+      this.$emit("search");
+    },
+    // 返回上一级
+    goto() {
+      this.$router.go(-1);
+    },
+  },
 };
 </script>
 

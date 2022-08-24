@@ -2,10 +2,17 @@
   <div class="container">
     <div>
       <subjectsTitle
-        total="10"
+        ref="tags"
+        :total="counts"
         seachName="标签名称"
         addname="新增标签"
         :isShowState="true"
+        :isReturn="isReturn"
+        :isBreadcrumb="isBreadcrumb"
+        title3="标签管理"
+        :title2="title2"
+        @add="addTags"
+        @search="getTagsList"
       />
 
       <el-table
@@ -16,7 +23,7 @@
       >
         <el-table-column type="index" width="50" label="序号"></el-table-column>
         <el-table-column prop="subjectName" label="所属学科"></el-table-column>
-        <el-table-column prop="tagName" label="目录名称"></el-table-column>
+        <el-table-column prop="tagName" label="标签名称"></el-table-column>
         <el-table-column prop="username" label="创建者"> </el-table-column>
         <el-table-column
           prop="addDate"
@@ -36,13 +43,19 @@
             <el-button type="text" @click="isDisabled(row.id, row.state)">
               {{ row.state ? "禁用" : "启用" }}
             </el-button>
-            <el-button type="text" :disabled="row.state === 1">修改</el-button>
+            <el-button
+              type="text"
+              :disabled="row.state === 1"
+              @click="tagsUpdate(row)"
+              >修改</el-button
+            >
             <el-button
               type="text"
               :disabled="row.state === 1"
               @click="removeTags(row.id)"
-              >删除</el-button
             >
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -59,6 +72,14 @@
         >
         </el-pagination>
       </el-row>
+      <!-- 修改弹窗 -->
+      <tagsUpdate
+        :visible.sync="dialogVisible"
+        :content="content"
+        @refresh="getTagsList"
+        :title="title"
+        :types="type"
+      />
     </div>
   </div>
 </template>
@@ -67,10 +88,17 @@
 import subjectsTitle from "../components/subjects-components/subjects-title.vue";
 import { list, changeState, remove } from "@/api/hmmm/tags";
 import dayjs from "dayjs";
+import tagsUpdate from "../components/subjects-components/tags-update.vue";
 
 export default {
   data() {
     return {
+      title2: "",
+      isBreadcrumb: false,
+      isReturn: false,
+      type: 0,
+      title: "",
+      dialogVisible: false,
       headerColor: {
         "background-color": "#FAFAFA",
         "border-bottom": "2px solid #E8E8E8",
@@ -82,10 +110,12 @@ export default {
       loading: false,
       state: 1,
       id: 0,
+      content: {},
     };
   },
   components: {
     subjectsTitle,
+    tagsUpdate,
   },
   created() {
     this.getTagsList();
@@ -93,10 +123,21 @@ export default {
   methods: {
     // 获取标签列表
     async getTagsList() {
+      this.title2 = this.$route.query.name;
+      if (this.$route.query.id) {
+        this.isReturn = true;
+        this.isBreadcrumb = true;
+      }
       this.loading = true;
       const {
         data: { counts, items },
-      } = await list({ page: this.page, pagesize: this.pagesize });
+      } = await list({
+        page: this.page,
+        pagesize: this.pagesize,
+        subjectID: this.$route.query.id ? this.$route.query.id : null,
+        tagName: this.$refs?.tags?.input ? this.$refs?.tags?.input : null,
+        state: this.$refs?.tags?.value ? this.$refs?.tags?.value : null,
+      });
       this.tableData = items;
       this.counts = counts;
       this.loading = false;
@@ -146,6 +187,18 @@ export default {
         this.getTagsList();
         this.$message.success("删除成功");
       } catch (error) {}
+    },
+    // 点击修改按钮
+    tagsUpdate(val) {
+      this.title = "修改目录";
+      this.dialogVisible = true;
+      this.content = val;
+    },
+    // 添加弹窗
+    addTags() {
+      this.title = "添加目录";
+      this.dialogVisible = true;
+      this.type = 1;
     },
   },
 };

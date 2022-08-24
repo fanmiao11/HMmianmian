@@ -2,7 +2,14 @@
   <div class="container">
     <div>
       <!-- title -->
-      <subjectsTitle :total="counts" seachName="学科名称" addname="新增学科" />
+      <subjectsTitle
+        ref="subject"
+        :total="counts"
+        seachName="学科名称"
+        addname="新增学科"
+        @add="addSubjects"
+        @search="getSubjectsList"
+      />
 
       <!-- table -->
       <el-table
@@ -34,9 +41,9 @@
         <el-table-column prop="totals" label="题目数量"> </el-table-column>
         <el-table-column prop="address" label="操作" width="250px">
           <template slot-scope="{ row }">
-            <el-button type="text">学科分类</el-button>
-            <el-button type="text">学科标签</el-button>
-            <el-button type="text">修改</el-button>
+            <el-button type="text" @click="directorys(row)">学科分类</el-button>
+            <el-button type="text" @click="tags(row)">学科标签</el-button>
+            <el-button type="text" @click="addSubjects(row, 1)">修改</el-button>
             <el-button type="text" @click="removeSubjects(row.id)"
               >删除</el-button
             >
@@ -57,17 +64,28 @@
         >
         </el-pagination>
       </el-row>
+      <!-- 添加学科 -->
+      <subjectsAdd
+        title="新增学科"
+        :visible.sync="dialogVisible"
+        :centent="centent"
+        :types="types"
+        @refresh="getSubjectsList"
+      >
+      </subjectsAdd>
     </div>
   </div>
 </template>
 
 <script>
 import subjectsTitle from "../components/subjects-components/subjects-title.vue";
-import { list ,remove} from "@/api/hmmm/subjects";
+import { list, remove } from "@/api/hmmm/subjects";
 import dayjs from "dayjs";
+import subjectsAdd from "../components/subjects-components/subjects-add.vue";
 export default {
   data() {
     return {
+      dialogVisible: false,
       headerColor: {
         "background-color": "#FAFAFA",
         "border-bottom": "2px solid #E8E8E8",
@@ -77,10 +95,13 @@ export default {
       page: 1,
       pagesize: 10,
       loading: false,
+      centent: {},
+      types: 0,
     };
   },
   components: {
     subjectsTitle,
+    subjectsAdd,
   },
   created() {
     this.getSubjectsList();
@@ -91,7 +112,11 @@ export default {
       this.loading = true;
       const {
         data: { counts, items },
-      } = await list({ page: this.page, pagesize: this.pagesize });
+      } = await list({
+        page: this.page,
+        pagesize: this.pagesize,
+        subjectName: this.$refs?.subject?.input ? this.$refs?.subject?.input : null,
+      });
       this.tableData = items;
       this.counts = counts;
       this.loading = false;
@@ -118,7 +143,7 @@ export default {
       return dayjs(cellValue).format("YYYY-MM-DD HH:mm:ss");
     },
     // 删除
-   async removeSubjects(id) {
+    async removeSubjects(id) {
       try {
         await this.$confirm("此操作将永久删除该标签, 是否继续?", {
           confirmButtonText: "确定",
@@ -129,6 +154,31 @@ export default {
         this.getSubjectsList();
         this.$message.success("删除成功");
       } catch (error) {}
+    },
+    // 点击学科分类
+    directorys(row) {
+      console.log(row);
+      this.$router.push({
+        path: "directorys",
+        name: "subjects-directorys",
+        query: { id: row.id, name: row.subjectName },
+      });
+    },
+    // 点击学科标签
+    tags(row) {
+      //  this.$router.push("tags");
+      console.log(row);
+      this.$router.push({
+        path: "tags",
+        name: "subjects-tags",
+        query: { id: row.id, name: row.subjectName },
+      });
+    },
+    // 添加
+    addSubjects(val, type) {
+      this.dialogVisible = true;
+      this.centent = val;
+      this.types = type;
     },
   },
 };

@@ -2,10 +2,17 @@
   <div class="container">
     <div>
       <subjectsTitle
+        ref="directorys"
         :total="counts"
         seachName="目录名称"
         addname="新增目录"
         :isShowState="true"
+        :isReturn="isReturn"
+        :isBreadcrumb="isBreadcrumb"
+        title3="目录管理"
+        :title2="title2"
+        @add="addDirectorys"
+        @search="getDirectionList"
       />
 
       <el-table
@@ -40,7 +47,12 @@
             <el-button type="text" @click="isDisabled(row.id, row.state)">
               {{ row.state ? "禁用" : "启用" }}
             </el-button>
-            <el-button type="text" :disabled="row.state === 1">修改</el-button>
+            <el-button
+              type="text"
+              :disabled="row.state === 1"
+              @click="directorysUpdate(row)"
+              >修改</el-button
+            >
             <el-button
               type="text"
               :disabled="row.state === 1"
@@ -63,18 +75,33 @@
         >
         </el-pagination>
       </el-row>
+
+      <!-- 修改弹窗 -->
+      <directoryUpdate
+        :visible.sync="dialogVisible"
+        :content="content"
+        @refresh="getDirectionList"
+        :title="title"
+        :types="type"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import subjectsTitle from "../components/subjects-components/subjects-title.vue";
-import { list, changeState,remove } from "@/api/hmmm/directorys";
+import { list, changeState, remove } from "@/api/hmmm/directorys";
 import dayjs from "dayjs";
+import directoryUpdate from "../components/subjects-components/directorys-add.vue";
 
 export default {
   data() {
     return {
+      dialogVisible: false,
+      title2: "",
+      type: 0,
+      isBreadcrumb: false,
+      isReturn: false,
       headerColor: {
         "background-color": "#FAFAFA",
         "border-bottom": "2px solid #E8E8E8",
@@ -84,10 +111,13 @@ export default {
       page: 1,
       pagesize: 10,
       loading: false,
+      content: {},
+      title: "",
     };
   },
   components: {
     subjectsTitle,
+    directoryUpdate,
   },
   created() {
     this.getDirectionList();
@@ -96,9 +126,24 @@ export default {
     // 获取目录列表
     async getDirectionList() {
       this.loading = true;
+      this.title2 = this.$route.query.name;
+      if (this.$route.query.id) {
+        this.isReturn = true;
+        this.isBreadcrumb = true;
+      }
       const {
         data: { counts, items },
-      } = await list({ page: this.page, pagesize: this.pagesize });
+      } = await list({
+        page: this.page,
+        pagesize: this.pagesize,
+        subjectID: this.$route.query.id ? this.$route.query.id : null,
+        directoryName: this.$refs?.directorys?.input
+          ? this.$refs?.directorys?.input
+          : null,
+        state: this.$refs?.directorys?.value
+          ? this.$refs?.directorys?.value
+          : null,
+      });
       this.tableData = items;
       this.counts = counts;
       this.loading = false;
@@ -148,6 +193,18 @@ export default {
         this.getDirectionList();
         this.$message.success("删除成功");
       } catch (error) {}
+    },
+    // 修改添加
+    directorysUpdate(val) {
+      this.title = "添加目录";
+      this.dialogVisible = true;
+      this.content = val;
+    },
+    // 添加弹窗
+    addDirectorys() {
+      this.title = "添加目录";
+      this.dialogVisible = true;
+      this.type = 1;
     },
   },
 };

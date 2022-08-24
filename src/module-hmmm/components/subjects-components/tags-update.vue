@@ -23,10 +23,10 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <!-- prop="directoryName" -->
-      <el-form-item label="标签名称" prop="directoryName">
+      <!-- prop="tagName" -->
+      <el-form-item label="标签名称" prop="tagName">
         <el-input
-          v-model="formData.directoryName"
+          v-model="formData.tagName"
           placeholder="请输入标签名称"
         ></el-input>
       </el-form-item>
@@ -40,7 +40,7 @@
 
 <script>
 import { simple } from "@/api/hmmm/subjects.js";
-import { update as updateTags, add } from "@/api/hmmm/directorys.js";
+import { update as updateTags, add } from "@/api/hmmm/tags.js";
 export default {
   name: "tagsUpdate",
   props: {
@@ -63,12 +63,12 @@ export default {
       formData: {
         subjectID: "",
         value: "",
-        directoryName: "",
+        tagName: "",
         subjectList: [],
       },
       rules: {
         subjectID: [{ required: true, message: "请输入学科名称", trigger: "blur" }],
-        directoryName: [
+        tagName: [
           { required: true, message: "请输入标签名称", trigger: "blur" },
         ],
       },
@@ -77,7 +77,7 @@ export default {
   methods: {
     // 点击关闭
     onClose() {
-      this.formData.directoryName = "";
+      this.formData.tagName = "";
       this.$refs.form.resetFields();
       this.$emit("update:visible", false);
     },
@@ -96,7 +96,7 @@ export default {
         try {
           await add({
             subjectID: this.formData.subjectID,
-            directoryName: this.formData.directoryName,
+            tagName: this.formData.tagName,
           });
           this.$message.success("添加成功");
           this.$emit("refresh");
@@ -109,7 +109,7 @@ export default {
           await updateTags({
             id: this.content.id,
             subjectID: this.formData.subjectID,
-            directoryName: this.formData.directoryName,
+            tagName: this.formData.tagName,
           });
           this.$message.success("修改成功");
           this.$emit("refresh");
@@ -127,7 +127,7 @@ export default {
       handler(newVal, oldVal) {
         console.log(newVal);
         this.formData.subjectID = newVal?.subjectID;
-        this.formData.directoryName = newVal?.directoryName;
+        this.formData.tagName = newVal?.tagName;
         this.formData.value = newVal?.subjectName;
       },
     },
