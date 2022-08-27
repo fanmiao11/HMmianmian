@@ -39,7 +39,7 @@
       </el-form>
       <!-- 警示框 -->
       <el-alert type="info" show-icon :closable="false">
-        共{{ count }}条记录</el-alert
+        共{{ count }}条记录 --- 徐庆哲</el-alert
       >
       <!-- table -->
       <el-table
@@ -49,7 +49,17 @@
       >
         <el-table-column type="index" label="序号" width="80">
         </el-table-column>
-        <el-table-column prop="title" label="文章标题"> </el-table-column>
+        <el-table-column label="文章标题">
+          <template slot-scope="{ row }">
+            {{ row.title }}
+            <i
+              v-if="row.videoURL"
+              class="el-icon-film"
+              style="color: #00f; font-size: 18px"
+              @click="videoBtn(row.videoURL)"
+            ></i
+          ></template>
+        </el-table-column>
         <el-table-column prop="visits" label="阅读数" width="80">
         </el-table-column>
         <el-table-column prop="username" label="录入人" width="130">
@@ -72,12 +82,12 @@
             <el-button type="text" @click="previewShow(row)">预览</el-button>
             <el-button
               type="text"
-              v-if="row.state === 1"
+              v-if="row.state === 0"
               @click="changState(row.id, row.state)"
-              >禁用</el-button
+              >启用</el-button
             >
             <el-button type="text" v-else @click="changState(row.id, row.state)"
-              >启用</el-button
+              >禁用</el-button
             >
             <el-button
               type="text"
@@ -106,7 +116,18 @@
         :previewData="previewData"
       ></articles-preview>
       <!-- 新增文章弹框 -->
-      <articles-add ref="add"></articles-add>
+      <articles-add ref="add" @update="getList(resData)"></articles-add>
+      <!-- 视频弹框 -->
+      <el-dialog title="视频预览" :visible.sync="videoShow" @close="closeFn">
+        <video
+          :src="videoURL"
+          controls
+          autoplay
+          class="video"
+          ref="dialogvideo"
+          width="100%"
+        ></video>
+      </el-dialog>
     </el-card>
   </div>
 </template>
@@ -131,6 +152,8 @@ export default {
       },
       count: 1, // 数据总数
       previewData: {},
+      videoURL: "",
+      videoShow: false,
     };
   },
 
@@ -191,6 +214,7 @@ export default {
         articleBody: "",
         videoURL: "",
       };
+      // this.getList(this.resData);
     },
     // 预览
     previewShow(row) {
@@ -210,7 +234,8 @@ export default {
             message: "删除成功!",
           });
           remove(row);
-          this.getList(this.resData);
+          this.pageChange(1)
+          // this.getList(this.resData);
         })
         .catch(() => {
           this.$message({
@@ -228,7 +253,15 @@ export default {
         title: row.title,
         articleBody: row.articleBody,
         videoURL: row.videoURL,
+        id: row.id,
       };
+    },
+    videoBtn(url) {
+      this.videoShow = true;
+      this.videoURL = url;
+    },
+    closeFn() {
+      this.videoURL = "";
     },
   },
 

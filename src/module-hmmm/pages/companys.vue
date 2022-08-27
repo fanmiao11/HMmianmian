@@ -84,7 +84,7 @@
       </el-form>
       <!-- 警告栏 -->
       <el-alert type="info" show-icon :closable="false">
-        共 {{ counts }} 条记录</el-alert
+        共 {{ counts }} 条记录 --- 徐庆哲</el-alert
       >
       <!-- table -->
       <el-table
@@ -150,6 +150,7 @@
       <my-pagination
         @pageChange="pageChange"
         @pageSizeChange="pageSizeChange"
+        :total="counts"
       ></my-pagination>
     </el-card>
     <add-companys
@@ -173,7 +174,7 @@ export default {
   data() {
     return {
       tableData: [], // 表格内容
-      counts: "",
+      counts: 0,
       // 用于请求table列表数据
       reqListParams: {
         page: 1, //当前页数
@@ -296,7 +297,8 @@ export default {
     },
     async delBtn(id) {
       await remove(id);
-      this.getTableList(this.reqListParams);
+      // this.getTableList(this.reqListParams);
+      this.pageChange(1)
     },
   },
   components: {

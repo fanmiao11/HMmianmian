@@ -32,7 +32,7 @@
       </el-tabs>
       <!-- 提示 -->
       <el-alert
-        :title="`数据一共 ${counts} 条`"
+        :title="`数据一共 ${counts} 条 --- 范苗`"
         type="info"
         show-icon
         style="margin-bottom: 15px"
@@ -313,7 +313,8 @@ export default {
           // 删除当前试题
           await remove(row);
           // 更新列表
-          this.getChoice();
+          this.pageChange(1)
+          // this.getChoice();
           // 操作成功提示
           this.$message({
             type: "success",

@@ -5,7 +5,7 @@
  * @email: 1373842098@qq.com
  * @Date: 2022-08-12 20:57:16
  * @LastEditors: sj
- * @LastEditTime: 2022-08-18 11:59:41
+ * @LastEditTime: 2022-08-19 23:39:38
 -->
 <template>
   <div class='container'>
@@ -18,7 +18,7 @@
       <SearchForm @search="onSearch"/>
       <!-- 条数提示 -->
       <el-alert
-    :title="`数据一共 ${counts} 条`"
+    :title="`数据一共 ${counts} 条 --- 胡纯`"
     type="info"
     show-icon
     style="margin-bottom: 15px"
@@ -38,7 +38,7 @@
     </template>
     </CommTable>
     <!-- 分页 -->
-    <Pagination :pageSize="pagesize.pagesize" :total="counts" @pageChange="toPage" @pageSizeChange="onPageSizeChange"/>
+    <Pagination :pageSize="pagesize.pagesize" :total="counts" @pageChange="toPage" @pageSizeChange="onPageSizeChange" :isHidePage="false"/>
     </el-card>
 
   <!-- 题目预览弹框 -->
@@ -138,8 +138,8 @@ export default {
              type: 'success',
             message: '删除成功!'
           });
-
-          this.getList(this.pagesize)
+             this.toPage(1)
+          // this.getList(this.pagesize)
         }).catch(() => {
 
         });
