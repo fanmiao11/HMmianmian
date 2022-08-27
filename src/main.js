@@ -19,7 +19,7 @@ import i18n from './lang' // Internationalization
 import './icons' // icon
 import './errorLog' // error log
 import * as filters from './filters' // global filters
-// import './mock' // simulation data
+import './mock' // simulation data
 // font-awesome
 import "font-awesome/css/font-awesome.css";
 /*
@@ -32,7 +32,7 @@ import hmmm from "@/module-hmmm/"; // 黑马面面
 /*
  * 富文本编辑器
  */
-import "@wangeditor/editor/dist/css/style.css"
+// import "@wangeditor/editor/dist/css/style.css"
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 Vue.component('Editor', Editor)
 Vue.component('Toolbar', Toolbar)

@@ -8,6 +8,8 @@ if (process.env.NODE_ENV === "production") {
     vue: "Vue",
     xlsx: "XLSX",
     "cos-js-sdk-v5": "COS",
+    "@wangeditor/editor": "wangEditor",
+    "quill": "Quill",
   };
 }
 function resolve(dir) {
@@ -22,12 +24,21 @@ module.exports = {
     // webpack排除打包
     externals,
   },
-
+  productionSourceMap: false,
   chainWebpack: (config) => {
     config.plugin("html").tap((args) => {
       args[0].myEnv = process.env.NODE_ENV;
       return args;
     });
+
+    const imagesRule = config.module.rule('images')
+    imagesRule
+      .use('image-webpack-loader')
+      .loader('image-webpack-loader')
+      .options({
+        bypassOnDebug: true
+      })
+      .end()
 
     const svgRule = config.module.rule("svg");
     svgRule.uses.clear();
@@ -40,6 +51,8 @@ module.exports = {
       .options({
         symbolId: "icon-[name]",
       });
+
+      
     const fileRule = config.module.rule("file");
     fileRule.uses.clear();
     fileRule

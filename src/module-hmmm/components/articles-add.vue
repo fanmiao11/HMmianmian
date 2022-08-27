@@ -52,9 +52,9 @@
 <script>
 // 引入样式和quillEditor;
 import { quillEditor } from "vue-quill-editor"; //调用编辑器
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css";
-import "quill/dist/quill.bubble.css";
+// import "quill/dist/quill.core.css";
+// import "quill/dist/quill.snow.css";
+// import "quill/dist/quill.bubble.css";
 import { add, update } from "@/api/hmmm/articles.js";
 import COS from "cos-js-sdk-v5";
 var cos = new COS({
