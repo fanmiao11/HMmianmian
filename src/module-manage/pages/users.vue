@@ -2,7 +2,12 @@
   <div>
     <el-card>
       <!-- 搜索 -->
-      <SeachTool btnText="新增用户" @onsave="onsave">
+      <SeachTool
+        btnText="新增用户"
+        @onsave="onsave"
+        @newDataes="onSuccess"
+        @onSeach="onSeach"
+      >
         <span slot="downtag"> 共{{ total }}条记录 ---- 沈寅武</span>
       </SeachTool>
       <br />
@@ -161,6 +166,20 @@ export default {
     onsave() {
       this.text = "创建";
       this.UserShow();
+    },
+    // 搜索
+    async onSeach(val) {
+      const { data } = await list({
+        page: this.paginationPage,
+        pagesize: this.paginationPagesize,
+      });
+      const arr = [];
+      data.list.forEach((item) => {
+        if (item.username.search(val) !== -1) {
+          arr.push(item);
+        }
+      });
+      this.tableData = arr;
     },
   },
 };
